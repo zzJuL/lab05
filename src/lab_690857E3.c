@@ -1,45 +1,47 @@
 #include <stdio.h>
+#include <string.h>
 void copy(char *psource, char *ptarget, unsigned num_char)
 {
+    unsigned count = 0;
     // TODO: write your code here
-    unsigned i = 0;
-    
-    while (i < num_char && *psource != '\0') {
-        *ptarget = *psource;  
-        ptarget++;            
-        psource++;            
-        i++;
+    while (count < num_char && *psource != '\0') {
+        *ptarget = *psource;
+        psource++;
+        ptarget++;
+        count++;
     }
-    
-   
-    *ptarget = '\0';
 
+    // Always null-terminate the target string safely
+    *ptarget = '\0';
 }
 
 void concatenate(char *psrc1, char *psrc2, char *ptarget, unsigned buffer_size)
 {
     // TODO: write your code here
-    unsigned space_left = buffer_size;
-    char *p_dest = ptarget;
-    char *p_src = psrc1;
-
-    while (*p_src != '\0' && space_left > 1) {
-        *p_dest = *p_src;
-        p_dest++;
-        p_src++;
-        space_left--;
+    if (buffer_size == 0) {
+        return;
     }
 
-    p_src = psrc2;
-    while (*p_src != '\0' && space_left > 1) {
-        *p_dest = *p_src;
-        p_dest++;
-        p_src++;
-        space_left--;
+    unsigned remaining = buffer_size - 1; // Reserve 1 byte for '\0'
+    char *dst = ptarget;
+
+    // 1. Copy first string
+    while (*psrc1 != '\0' && remaining > 0) {
+        *dst = *psrc1;
+        psrc1++;
+        dst++;
+        remaining--;
     }
 
-    *p_dest = '\0';
-    
+    // 2. Append second string if space remains
+    while (*psrc2 != '\0' && remaining > 0) {
+        *dst = *psrc2;
+        psrc2++;
+        dst++;
+        remaining--;
+    }
+
+    *dst = '\0';
 }
 
 // DO NOT change the code below
